@@ -2,8 +2,6 @@ let axios = require('axios');
 let express = require('express');
 let api = express.Router();
 
-let covid_api = "https://api.covid19api.com/summary"
-let covid_tracking = "https://covidtracking.com/api/states"
 let corona_api = "https://corona-api.com/countries"
 
 let total_countries_tracked = 5
@@ -13,10 +11,16 @@ api.get('/countries', (req, res) => {
     axios.get(corona_api)
     .then(response => {
         let object = find_top_five_countries_by_confirmed_cases( response.data.data )
+        console.log( object )
         res.json( object )
     })
     .catch( error => {
-        res.json( error )
+        let error_object = {
+            error: true,
+            status_code: error.request.res.statusCode,
+            status_mssage: error.request.res.statusMessage
+        }
+        res.json( error_object )
     })
 })
 
