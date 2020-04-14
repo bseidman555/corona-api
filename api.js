@@ -11,7 +11,6 @@ api.get('/countries', (req, res) => {
     axios.get(corona_api)
     .then(response => {
         let object = find_top_five_countries_by_confirmed_cases( response.data.data )
-        console.log( object )
         res.json( object )
     })
     .catch( error => {
@@ -32,11 +31,12 @@ function generate_country_object( country_data ) {
     let deaths = country_data.latest_data.deaths;
     let country_info = {
         "seriesname": country_name,
-        "latest_data": [
-            { "confirmed": confirmed },
-            { "recovered": recovered },    
-            { "deaths": deaths },
-        ]     
+        "latest_data": { 
+            "confirmed": confirmed,
+            "recovered": recovered,    
+            "deaths": deaths
+        }
+             
     };
     return country_info;
 }
@@ -52,7 +52,7 @@ function find_top_five_countries_by_confirmed_cases( country_data ) {
         }
         else {
             let index_of_smallest_confirmed_country_from_set = find_index_of_smallest_confirmed_case( object.data );
-            if( confirmed > object.data[index_of_smallest_confirmed_country_from_set].latest_data[0].confirmed ) {
+            if( confirmed > object.data[index_of_smallest_confirmed_country_from_set].latest_data.confirmed ) {
                 object.data[index_of_smallest_confirmed_country_from_set] = generate_country_object(country);
             }
         }
@@ -63,7 +63,7 @@ function find_top_five_countries_by_confirmed_cases( country_data ) {
 function find_index_of_smallest_confirmed_case( top_five_countries ) {
     let current_smallest = top_five_countries[0];
     for( let country of top_five_countries ) {
-        if( country.latest_data[0].confirmed < current_smallest.latest_data[0].confirmed ) {
+        if( country.latest_data.confirmed < current_smallest.latest_data.confirmed ) {
             current_smallest = country;
         }
     }
