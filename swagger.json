@@ -1,0 +1,91 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This API pulls data from https://corona-api.com/countries and returns data on the five countries with the highest confirmed cases. This data includes the total confirmed cases, the total number of recovered patients, and the total number of deaths.",
+    "version": "1.0.0",
+    "title": "Pandemonium Backend Bar Graph"
+  },
+  "host": "localhost:8080",
+  "tags": [
+    {
+      "name": "countries",
+      "description": "get data for top five countries based on confirmed cases"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/countries": {
+      "get": {
+        "tags": [
+          "countries"
+        ],
+        "summary": "Get data of the top five countries",
+        "description": "Data includes confirmed cases, deaths, and recovered",
+        "operationId": "getCountries",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "tokenID",
+            "in": "query",
+            "description": "Token ID for an authenticated user ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Data displayed for top 5 countries",
+            "schema": {
+              "$ref": "#/definitions/Countries"
+            }
+          },
+          "404": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Countries": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "properties": {
+              "seriesName": {
+                "type": "string",
+                "example": "France"
+              },
+              "latest_data": {
+                "type": "object",
+                "properties": {
+                  "confirmed": {
+                    "type": "integer",
+                    "example": 100000
+                  },
+                  "recovered": {
+                    "type": "integer",
+                    "example": 100000
+                  },
+                  "deaths": {
+                    "type": "integer",
+                    "example": 100000
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -57,6 +57,7 @@ function find_top_five_countries_by_confirmed_cases( country_data ) {
             }
         }
     }
+    object.data.sort((a,b) => b.latest_data.confirmed - a.latest_data.confirmed )
     return object;
 }
     
