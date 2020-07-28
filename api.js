@@ -15,7 +15,7 @@ api.get('/countries', (req, res) => {
     })
     .catch( error => {
         let error_object = {
-            error: true,
+            error: true,    
             status_code: error.request.res.statusCode,
             status_mssage: error.request.res.statusMessage
         }
